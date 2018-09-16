@@ -26,7 +26,6 @@ const tables = [
     `DROP TABLE priorities;`,
 ]
 
-
 tables.forEach((item, i) => {
     let query = item
     postgresClient.query(query, (err) => {
