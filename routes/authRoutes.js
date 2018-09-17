@@ -45,16 +45,22 @@ router.post('/login', (req,res)=> {
                         jwt.sign({email: user.get('email')}, keys.secret, {expiresIn: 10000},(err, token)=>{
                             models.user
                             .forge({email: email})
-                            .fetch({require: true})
+                            .fetch({withRelated: ['projects'], require: true})
                             .then(user=> {
                                 user
                                 .save({token: `JWT ${token}`})
-                                .then(collection=>{
-                                    console.log(`Users token saved in DB`)
+                                .then(user=>{
+                                    console.log(user, 'user with projects')
+                                    console.log(JSON.stringify(user), 'user gET')
+                                    
                                     res.json({
-                                        success: true,
-                                        token: 'JWT ' + token,
-                                    })
+                                             success: true,
+                                             user: user,
+                                        })
+                                    // res.render('projects', {
+                                    //     title: 'projects',
+                                    //     user: JSON.stringify(user)
+                                    // })
                                 })
                             })
                         })

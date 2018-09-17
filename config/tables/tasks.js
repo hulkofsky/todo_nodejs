@@ -25,7 +25,7 @@ module.exports = [
         task_name: `Wash dishes`,
         priority_id: 1,
         deadline: `2018-10-15 00:00:00`,
-        is_done: false,
+        is_done: true,
         project_id: 2
     },
 
@@ -33,7 +33,7 @@ module.exports = [
         task_name: `Buy cats food`,
         priority_id: 3,
         deadline: `2018-10-12 00:00:00`,
-        is_done: false,
+        is_done: true,
         project_id: 2
     },
 ]

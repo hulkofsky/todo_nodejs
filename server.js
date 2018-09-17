@@ -8,8 +8,8 @@ const path = require('path')
 
 //ROUTES
 const authRouter = require('./routes/authRoutes')
-const projectRoutes = require('./routes/projectRoutes')
-
+const projectRouter = require('./routes/projectRoutes')
+const taskRouter = require('./routes/taskRoutes')
 //morgan init
 app.use(morgan('dev'))
 
@@ -25,7 +25,9 @@ app.use(bodyParser.json({limit: '50mb', extended: true}))
 
 //using routes
 app.use('/', authRouter)
-app.use('/', projectRoutes)
+app.use('/', projectRouter)
+app.use('/', taskRouter)
+
 
 app.get('*', (req,res)=>{
     res.send('Oo oops!!')

@@ -17,13 +17,13 @@ postgresClient.connect((err)=>{
 
 const tables = [
 
-    `DROP TABLE users;`,
+    `DROP TABLE tasks;`,
 
     `DROP TABLE projects;`,
 
-    `DROP TABLE tasks;`,
-
     `DROP TABLE priorities;`,
+
+    `DROP TABLE users;`,
 ]
 
 tables.forEach((item, i) => {

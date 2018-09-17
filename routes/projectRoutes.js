@@ -1,120 +1,87 @@
 const express = require('express')
-const projectRouter = express.Router()
+const router = express.Router()
 const models = require('../config/models')
 //const Validation = require('../../utils/validation')
 //const validation = new Validation
-const bcrypt = require('bcrypt')
 
-//get all admins
-projectRouter.get('/admins', (req,res)=>{
+//get project by id
+router.get('/:userId/projects/:projectId', (req,res)=>{
     const token = req.headers.token
+    const userId = req.params.userId
+    const projectId = req.params.projectId
+
+
+    console.log(token, 'project page token')
+    console.log(userId, 'project page userId')
+    console.log(projectId, 'project page projectId')
 
     if(!token){
         return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
     }
 
-    models.admin
-    .forge({signin_token: token}) //token check here
+    models.user
+    .query((qb) => {
+        qb
+        .where({token: token})
+        .andWhere({id: userId})
+    })
     .fetch()
     .then(user => {
         if(user){
-            models.admin
-            .forge()
-            .fetchAll()
-            .then(admins=>{
-                res.status(200).json({success: true, data: admins})
-            }).catch(err=>{
-                res.status(500).json({success: false, data: {message: err.message}})
+            models.project
+            .forge({id: projectId})
+            .fetch({withRelated: ['tasks']})
+            .then(project=>{
+                res.status(200).json({
+                    success: true, 
+                    user: user, 
+                    project: project
+                })
             })
         }else{
             res.status(403).json({success: false, data: {message: `403. Restricted.`}})
         }
 
     })
-})
-
-//get admin by id
-projectRouter.get('/admins/:id', (req,res)=>{
-    const token = req.headers.token
-
-    if(!token){
-        return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
-    }
-
-    models.admin
-    .forge({signin_token: token}) //token check here
-    .fetch()
-    .then(user => {
-        if(user){
-            models.admin
-            .forge({id: req.params.id})
-            .fetch().
-            then(admin=>{
-                res.json({success: true, data: admin})
-            }).catch(err=>{
-                res.status(500).json({success: false, data: {message: err.message}})
-            })
-        }else{
-            res.status(403).json({success: false, data: {message: `403. Restricted.`}})
-        }
+    .catch(err=>{
+        res.status(500).json({success: false, data: {message: err.message}})
     })
 })
 
-//create admin
-projectRouter.post('/admins', (req,res)=>{
+//create project
+router.post('/:userId/projects', (req,res)=>{
     const token = req.headers.token
-    const userData = req.body
+    const userId = req.params.userId
+    const projectName = req.body.project_name
 
     if(!token){
         return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
     }
 
-    models.admin
-    .forge({signin_token: token}) //token check here
+    models.user
+    .query((qb) => {
+        qb
+        .where({token: token})
+        .andWhere({id: userId})
+    })
     .fetch()
     .then(user => {
         if(user){
            //validation
-            if(!validation.validateText(userData.username)){
-                return res.json({success: false, message: 'Admin name validation failed'})
-            }
+            // if(!validation.validateText(projectName)){
+            //     return res.json({success: false, message: 'Project name validation failed'})
+            // }
 
-            if(!validation.validateEmail(userData.email)){
-                return res.json({success: false, message: 'Email validation failed'})
-            }
-
-            if(!validation.validatePass(userData.password)){
-                return res.json({success: false, message: 'Password validation failed'})
-            }
-
-            if(userData.password!=userData.confPass){
-                return res.json({success: false, message: 'Passwords does not match'})
-            }
-
-            //bcrypt
-            bcrypt.genSalt(10, (err,salt)=> {
-                if (err) {
-                    console.log(err, 'while crypting password(gensalt)')
-                }
-                bcrypt.hash(userData.password, salt, (err, hash) => {
-                    if (err) {
-                        console.log(err, 'while crypting password')
-                    } else {
-                        models.admin
-                        .forge({
-                            username: req.body.username,
-                            password: hash,
-                            email: req.body.email,
-                        })
-                        .save()
-                        .then(collection=>{
-                            res.json({success: true, data: {id: collection.get('id')}})
-                        }).catch(err=>{
-                            res.status(500).json({success: false, data: {message: err.message}})
-                        })
-                    }
-                })
+            models.project
+            .forge({
+                project_name: projectName,
+                user_id: userId
             })
+            .save()
+            .then(result=>{
+                res.json({success: true, data: {id: result.get('id')}})
+            })
+            
         }else{
             res.status(403).json({success: false, data: {message: `403. Restricted.`}})
         }
@@ -124,64 +91,45 @@ projectRouter.post('/admins', (req,res)=>{
     })
 })
 
-//update admin
-projectRouter.put('/admins/:id', (req,res)=>{
+//update project
+router.put('/:userId/projects/:projectId', (req,res)=>{
     const token = req.headers.token
-    const userData = req.body
-    const adminId = req.params.id
+    const userId = req.params.userId
+    const projectId = req.params.projectId
+    const projectName = req.body.project_name
 
     if(!token){
         return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
     }
 
-    models.admin
-    .forge({signin_token: token}) //token check here
+    models.user
+    .query((qb) => {
+        qb
+        .where({token: token})
+        .andWhere({id: userId})
+    })
     .fetch()
     .then(user => {
         if(user){
-            //validation
-            if(!validation.validateText(userData.username)){
-                return res.json({success: false, message: 'Admin name validation failed'})
-            }
-
-            if(!validation.validateEmail(userData.email)){
-                return res.json({success: false, message: 'Email validation failed'})
-            }
-
-            if(!validation.validatePass(userData.password)){
-                return res.json({success: false, message: 'Password validation failed'})
-            }
-
-            if(userData.password!=userData.confPass){
-                return res.json({success: false, message: 'Passwords does not match'})
-            }
-
-            //bcrypt
-            bcrypt.genSalt(10, (err,salt)=> {
-                if (err) {
-                    console.log(err, 'while crypting password(gensalt)')
-                }
-                bcrypt.hash(userData.password, salt, (err, hash) => {
-                    if (err) {
-                        console.log(err, 'while crypting password')
-                    } else {
-                        models.admin
-                        .forge({id:  adminId})
-                        .fetch({require: true})
-                        .then(admin=>{
-                            admin
-                            .save({
-                                username: req.body.username,
-                                password: hash,
-                                email: req.body.email,
-                            })
-                            .then(collection=>{
-                                res.json({success: true, data: {id: collection.get('id')}})
-                            })
-                        })
-                    }
+           //validation
+            // if(!validation.validateText(projectName)){
+            //     return res.json({success: false, message: 'Project name validation failed'})
+            // }
+            
+            models.project
+            .forge({id:  projectId})
+            .fetch({require: true})
+            .then(project=>{
+                project
+                .save({
+                    project_name: projectName,
+                    user_id: userId
+                })
+                .then(result=>{
+                    res.json({success: true, data: {message: `Project ${result.get('id')} successfully updated`}})
                 })
             })
+            
         }else{
             res.status(403).json({success: false, data: {message: `403. Restricted.`}})
         }
@@ -192,30 +140,44 @@ projectRouter.put('/admins/:id', (req,res)=>{
 })
 
 //delete project
-projectRouter.delete('/admins/:id', (req,res)=>{
+router.delete('/:userId/projects/:projectId', (req,res)=>{
     const token = req.headers.token
+    const userId = req.params.userId
+    const projectId = req.params.projectId
 
     if(!token){
         return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
     }
 
-    models.admin
-    .forge({signin_token: token}) //token check here
+    models.user
+    .query((qb) => {
+        qb
+        .where({token: token})
+        .andWhere({id: userId})
+    })
     .fetch()
     .then(user => {
         if(user){
-            models.admin
-            .forge({id: req.params.id})
-            .fetch()
-            .then(admin=>{
-                if(admin){
-                    admin
+            models.project
+            .forge({id: projectId})
+            .fetch({withRelated: ['tasks']})
+            .then(project=>{
+                         
+                const projectData = JSON.stringify(project)
+                let hasTasks = false 
+
+                JSON.parse(projectData).tasks.forEach(element => {
+                    console.log(element, 'element')
+                    if(!element.is_done) hasTasks = true  
+                });
+                if(project&&!hasTasks){
+                    project
                     .destroy()
                     .then(()=>{
-                        return res.status(200).json({success: true, data: {message: 'Admin successfully deleted'}});
+                        return res.status(200).json({success: true, data: {message: 'Project successfully deleted'}});
                     })
                 }else{
-                    return res.status(404).json({success: false, data: {message: `404. Not found.`}})
+                    return res.status(500).json({success: false, data: {message: `Cannot delete project with unfinished tasks.`}})
                 }
             })
         }else{
@@ -227,32 +189,4 @@ projectRouter.delete('/admins/:id', (req,res)=>{
     })
 })
 
-//delete multiple admins
-projectRouter.delete('/admins', (req,res)=>{
-    const token = req.headers.token
-    const ids = JSON.parse(req.body.ids)
-
-    if(!token){
-        return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
-    }
-
-    models.admin
-        .forge({signin_token: token}) //token check here
-        .fetch()
-        .then(user => {
-            if(user){
-                models.admin
-                    .query()
-                    .whereIn('id', ids).del().then(count=>{
-                    res.status(200).json({success: true, data: {message: `Successfully deleted ${count} rows.`}})
-                })
-            }else{
-                return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
-            }
-        })
-        .catch(err=>{
-            return res.status(500).json({success: false, data: {message: err.message}})
-        })
-})
-
-module.exports = projectRouter
+module.exports = router
