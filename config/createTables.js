@@ -39,9 +39,9 @@ const tables = [
         project_id INT NOT NULL
     );`,
 
-    `CREATE TABLE IF NOT EXISTS priority(
+    `CREATE TABLE IF NOT EXISTS priorities(
         id INT PRIMARY KEY,
-        priority_colour TEXT NOT NULL,
+        priority_colour TEXT NOT NULL
     );`,
 ]
 

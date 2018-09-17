@@ -27,14 +27,14 @@ projects.forEach((item, i)=>{
     models.project
         .forge({
             project_name: item.project_name,
-            user_id: item.id
+            user_id: item.user_id
         })
         .save()
         .then(result=>{
-            console.log(`project ${result.get('project_name')} successfully inserted`)
+            console.log(`project ${item.project_name} successfully inserted`)
         })
         .catch(err=>{
-            console.log(`Error while inserting branches ${result.get('project_name')} - ${err}`)
+            console.log(`Error while inserting branches ${item.project_name} - ${err}`)
         })
 })
 
@@ -42,15 +42,15 @@ projects.forEach((item, i)=>{
 priorities.forEach((item, i)=>{
     models.priority
         .forge({
-            id: item.item.id,
+            id: item.id,
             priority_colour: item.priority_colour
         })
-        .save()
+        .save(null, {method: 'insert'})
         .then(result=>{
-            console.log(`priority ${result.get('priority_colour')} successfully inserted`)
+            console.log(`priority ${item.priority_colour} successfully inserted`)
         })
         .catch(err=>{
-            console.log(`Error while inserting priority ${result.get('priority_colour')} - ${err}`)
+            console.log(`Error while inserting priority ${item.priority_colour} - ${err}`)
         })
 })
 
@@ -66,10 +66,10 @@ tasks.forEach((item, i)=>{
     })
     .save()
     .then(result=>{
-        console.log(`task ${result.get('task_name')} successfully inserted`)
+        console.log(`task ${item.task_name} successfully inserted`)
     })
     .catch(err=>{
-        console.log(`Error while inserting task ${result.get('task_name')} - ${err}`)
+        console.log(`Error while inserting task ${item.task_name} - ${err}`)
     })
 })
 
@@ -83,10 +83,10 @@ users.forEach((item, i)=>{
     })
     .save()
     .then(result=>{
-        console.log(`user ${result.get('username')} successfully inserted`)
+        console.log(`user ${item.username} successfully inserted`)
     })
     .catch(err=>{
-        console.log(`Error while inserting user ${result.get('username')} - ${err}`)
+        console.log(`Error while inserting user ${item.username} - ${err}`)
     })
 })
 

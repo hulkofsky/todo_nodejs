@@ -1,10 +1,9 @@
 const express = require('express')
 const projectRouter = express.Router()
-const models = require('../../config/models')
-const Validation = require('../../utils/validation')
-const validation = new Validation
+const models = require('../config/models')
+//const Validation = require('../../utils/validation')
+//const validation = new Validation
 const bcrypt = require('bcrypt')
-const Crud = require('../../utils/crudFunctions')
 
 //get all admins
 projectRouter.get('/admins', (req,res)=>{

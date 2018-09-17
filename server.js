@@ -2,9 +2,9 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-const port = 3000
+const port = 5000
 const cors = require('cors')
-const constants = require('./utils/constants')
+const path = require('path')
 
 //ROUTES
 const authRouter = require('./routes/authRoutes')
@@ -14,6 +14,10 @@ const projectRoutes = require('./routes/projectRoutes')
 app.use(morgan('dev'))
 
 app.use(cors())
+
+//load view engine
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'pug')
 
 //bodyparser init
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))

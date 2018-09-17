@@ -1,19 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const keys = require('../../config/keys')
+const keys = require('../config/keys')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const constants = require('../../utils/constants')
-const models = require('../../config/models')
+const models = require('../config/models')
 
 //get LOG IN page
 router.get('/login', (req,res)=>{
-    //load login view
+    res.render('login')
 })
 
 //get register page
 router.get('/register', (req,res)=>{
-    //load register view
+    res.render('register')
 })
 
 //get LOG IN page
@@ -26,7 +25,7 @@ router.post('/login', (req,res)=> {
     const email = req.body.email
     const password = req.body.password
 
-    if (!username || !password) {
+    if (!email || !password) {
         res.json({success: false, message: 'Pls enter username and password to sign in'})
     } else {
         models.user
@@ -43,13 +42,13 @@ router.post('/login', (req,res)=> {
                         })
                     }
                     if (isMatch) {
-                        jwt.sign({email: admin.attributes.email}, keys.secret, {expiresIn: 10000},(err, token)=>{
+                        jwt.sign({email: user.get('email')}, keys.secret, {expiresIn: 10000},(err, token)=>{
                             models.user
                             .forge({email: email})
                             .fetch({require: true})
                             .then(user=> {
                                 user
-                                .save({signin_token: `JWT ${token}`})
+                                .save({token: `JWT ${token}`})
                                 .then(collection=>{
                                     console.log(`Users token saved in DB`)
                                     res.json({
@@ -94,8 +93,10 @@ router.post('/register', (req,res)=>{
                 .forge({
                     username: userData.username,
                     email: userData.email,
-                    password: userData.password
-                }).save().then(user => {
+                    password: hash
+                })
+                .save()
+                .then(user => {
                     return res.json({success: true, data: {id: user.get('id')}})
                 })  
             }

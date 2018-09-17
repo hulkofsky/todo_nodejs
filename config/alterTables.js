@@ -22,7 +22,7 @@ const tables = [
     `,
 
     `ALTER TABLE tasks     
-        ADD FOREIGN KEY (project_id) REFERENCES projects(id)ON DELETE CASCADE;
+        ADD FOREIGN KEY (project_id) REFERENCES projects(id)ON DELETE CASCADE,
         ADD FOREIGN KEY (priority_id) REFERENCES priorities(id)ON DELETE CASCADE;
     `,
 ]
