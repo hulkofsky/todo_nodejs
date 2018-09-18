@@ -16,7 +16,7 @@ app.use(morgan('dev'))
 app.use(cors())
 
 //load view engine
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'front/views'))
 app.set('view engine', 'pug')
 
 //bodyparser init

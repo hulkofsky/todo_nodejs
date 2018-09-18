@@ -4,12 +4,47 @@ const models = require('../config/models')
 //const Validation = require('../../utils/validation')
 //const validation = new Validation
 
+router.get('/',(req,res)=>{
+    const token = req.headers.token
+    const userId = req.headers.userId
+
+    console.log(token, typeof token, "token on homepage")
+    console.log(userId, typeof userId, "userId on homepage")
+
+    if(!token || token != "null" || !userId || userId != "null"){
+        return res.status(403).json({success:false, message: `403. Unauthorized`})
+    } else{
+        models.user
+        .query((qb) => {
+            qb
+            .where({token: token})
+            .andWhere({id: userId})
+        })
+        .fetch()
+        .then(user => {
+            if(user){
+                models.project
+                .forge()
+                .fetchAll({withRelated: ['tasks']})
+                .then(project=>{
+                    return res.status(200).json({
+                        success: true, 
+                        user: user, 
+                        project: project
+                    })
+                })
+            }else{
+                return res.status(403).json({success: false, data: {message: `403. Unauthorized.`}})
+            }
+        }) 
+    }
+})
+
 //get project by id
 router.get('/:userId/projects/:projectId', (req,res)=>{
     const token = req.headers.token
     const userId = req.params.userId
     const projectId = req.params.projectId
-
 
     console.log(token, 'project page token')
     console.log(userId, 'project page userId')
