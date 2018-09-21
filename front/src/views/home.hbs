@@ -1,0 +1,32 @@
+<p class="wrapper__content__mid__title">Search results:</p>
+<div class="wrapper__content__mid__results">
+    {{#each profiles}}
+        <div class="wrapper__content__mid__results__item">
+            <img class="wrapper__content__mid__results__item__bg" src="img/searchUserBG.jpg" alt="profile_bg">
+            <div class="wrapper__content__mid__results__item__photoWrapper">
+                <img class="wrapper__content__mid__results__item__photoWrapper__photo" src="img/default-user.jpg" alt="profile_Photo">
+            </div>
+            <div class="wrapper__content__mid__results__item__info">
+                <p class="wrapper__content__mid__results__item__info__name">{{this.firstname}} {{this.lastname}}</p>
+                <p class="wrapper__content__mid__results__item__info__quote">{{this.quote}}</p>
+            </div>
+            <div class="wrapper__content__mid__results__item__btns" data-id="{{this.user_id}}">
+                <button class="wrapper__content__mid__results__item__btns__btn" name="userFollow">
+                    <i class="fa fa-user-plus"></i>
+                    <p class="wrapper__content__mid__results__item__btns__btn__text">Friend</p>
+                </button>
+                <button class="wrapper__content__mid__results__item__btns__btn" name="userBlock">
+                    <i class="fas fa-user-times"></i>
+                    <p class="wrapper__content__mid__results__item__btns__btn__text">Enemy</p>
+                </button>
+
+            </div>
+        </div>
+    {{else}}
+        Nothing was found...
+    {{/each}}
+</div>
+<div class="wrapper__content__mid__back">
+    <button class="wrapper__content__mid__back__btn" name="backToWall">Back to Wall</button>
+</div>
+

@@ -24,7 +24,7 @@ router.get('/projects', (req,res)=>{
 router.post('/login', (req,res)=> {
     const email = req.body.email
     const password = req.body.password
-
+    console.log(email, password, "credentials")
     if (!email || !password) {
         res.json({success: false, message: 'Pls enter username and password to sign in'})
     } else {
@@ -94,7 +94,7 @@ router.post('/register', (req,res)=>{
             if (err) {
                 console.log(err, 'while crypting password')
             }else{
-                //serching bank id in table BANKS
+                //searching bank id in table BANKS
                 models.user
                 .forge({
                     username: userData.username,

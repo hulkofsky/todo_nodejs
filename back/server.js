@@ -15,9 +15,9 @@ app.use(morgan('dev'))
 
 app.use(cors())
 
-//load view engine
-app.set('views', path.join(__dirname, 'front/views'))
-app.set('view engine', 'pug')
+// //load view engine
+// app.set('views', path.join(__dirname, 'front/views'))
+// app.set('view engine', 'pug')
 
 //bodyparser init
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))

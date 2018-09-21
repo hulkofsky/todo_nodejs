@@ -1,14 +1,14 @@
 module.exports = [
     {
         id: 1,
-        priority_colour: `white`,
+        priority_color: `white`,
     },
     {
         id: 2,
-        priority_colour: `orange`,
+        priority_color: `orange`,
     },
     {
         id: 3,
-        priority_colour: `red`,
+        priority_color: `red`,
     },
 ]

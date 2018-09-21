@@ -7,9 +7,20 @@ const priority = Bookshelf.Model.extend({tableName: 'priorities'})
 const project = Bookshelf.Model.extend({
     tableName: 'projects',
     tasks: function(){
-        return this.hasMany(task, 'project_id')
+        return this.hasMany(
+            Bookshelf.Model.extend(
+                {
+                    tableName: 'tasks',
+                    priority: function () {
+                        return this.belongsTo(priority, 'priority_id')
+                    }
+                }
+            ),
+            'project_id'
+        )
     },
 })
+
 const task = Bookshelf.Model.extend({tableName: 'tasks'})
 const user = Bookshelf.Model.extend({
     tableName: 'users',

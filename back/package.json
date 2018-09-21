@@ -19,23 +19,8 @@
     "pug": "^2.0.3"
   },
   "scripts": {
-    "back": "nodemon server.js",
-    "front": "gulp default",
-    "build": "webpack --mode production"
+    "start": "nodemon server.js"
   },
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
-    "browser-sync": "^2.24.7",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^8.0.0",
-    "gulp-browserify": "^0.5.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-csso": "^3.0.1",
-    "gulp-pug": "^4.0.1",
-    "gulp-requirejs": "^1.2.0",
-    "gulp-sourcemaps": "^2.6.4"
-  }
+  "license": "ISC"
 }

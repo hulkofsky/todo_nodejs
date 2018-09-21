@@ -6,12 +6,12 @@ const models = require('../config/models')
 
 router.get('/',(req,res)=>{
     const token = req.headers.token
-    const userId = req.headers.userId
+    const userId = req.headers.user_id
 
     console.log(token, typeof token, "token on homepage")
     console.log(userId, typeof userId, "userId on homepage")
 
-    if(!token || token != "null" || !userId || userId != "null"){
+    if(!token || token == "null" || !userId || userId == "null"){
         return res.status(403).json({success:false, message: `403. Unauthorized`})
     } else{
         models.user
@@ -24,13 +24,39 @@ router.get('/',(req,res)=>{
         .then(user => {
             if(user){
                 models.project
-                .forge()
-                .fetchAll({withRelated: ['tasks']})
+                .where({user_id: userId})
+                .fetchAll({withRelated: ['tasks.priority']})
                 .then(project=>{
+                    
+                    const projectJson = project.toJSON()
+                    const today = new Date()
+                    
+                    const todayTasks = []
+
+                    for(i=0;i<projectJson.length;i++){
+                        for(j=0;j<projectJson[i].tasks.length;j++){
+                            // console.log(projectJson[i].tasks[j], 'tasks')
+
+                            // console.log(typeof projectJson[i].tasks[j].deadline , 'typeof deadline')
+                            // console.log(projectJson[i].tasks[j].deadline.toISOString().substring(0, 10), 'date from db')
+                            console.log(projectJson[i].color , 'color')
+                            if(projectJson[i].tasks[j].deadline.toISOString().substring(0, 10) == today.toISOString().substring(0, 10)){
+                                todayTasks.push({
+                                    ...projectJson[i].tasks[j],
+                                    color: projectJson[i].color,
+                                    project_name: projectJson[i].project_name
+                                })
+                            }
+                        }
+                    }
+
+                    console.log(todayTasks, `today tasks`)
+
                     return res.status(200).json({
                         success: true, 
                         user: user, 
-                        project: project
+                        project: project,
+                        todayTasks: todayTasks
                     })
                 })
             }else{

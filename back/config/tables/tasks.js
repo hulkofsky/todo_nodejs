@@ -36,6 +36,29 @@ module.exports = [
         is_done: true,
         project_id: 2
     },
+    {
+        task_name: `Play songs`,
+        priority_id: 3,
+        deadline: `2018-09-21 20:30:00`,
+        is_done: false,
+        project_id: 1
+    },
+
+    {
+        task_name: `Wash dishes`,
+        priority_id: 1,
+        deadline: `2018-09-21 00:00:00`,
+        is_done: true,
+        project_id: 2
+    },
+
+    {
+        task_name: `Buy cats food`,
+        priority_id: 3,
+        deadline: `2018-09-21 00:00:00`,
+        is_done: true,
+        project_id: 2
+    },
 ]
 
 // `CREATE TABLE IF NOT EXISTS tasks(

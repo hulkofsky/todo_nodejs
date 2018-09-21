@@ -27,7 +27,8 @@ projects.forEach((item, i)=>{
     models.project
         .forge({
             project_name: item.project_name,
-            user_id: item.user_id
+            user_id: item.user_id,
+            color: item.color
         })
         .save()
         .then(result=>{
@@ -43,14 +44,14 @@ priorities.forEach((item, i)=>{
     models.priority
         .forge({
             id: item.id,
-            priority_colour: item.priority_colour
+            priority_color: item.priority_color
         })
         .save(null, {method: 'insert'})
         .then(result=>{
-            console.log(`priority ${item.priority_colour} successfully inserted`)
+            console.log(`priority ${item.priority_color} successfully inserted`)
         })
         .catch(err=>{
-            console.log(`Error while inserting priority ${item.priority_colour} - ${err}`)
+            console.log(`Error while inserting priority ${item.priority_color} - ${err}`)
         })
 })
 

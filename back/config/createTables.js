@@ -27,6 +27,7 @@ const tables = [
     `CREATE TABLE IF NOT EXISTS projects(
         id SERIAL PRIMARY KEY,
         project_name TEXT NOT NULL,
+        color TEXT NOT NULL,
         user_id INT NOT NULL
     );`,
 
@@ -41,7 +42,7 @@ const tables = [
 
     `CREATE TABLE IF NOT EXISTS priorities(
         id INT PRIMARY KEY,
-        priority_colour TEXT NOT NULL
+        priority_color TEXT NOT NULL
     );`,
 ]
 
