@@ -18,6 +18,16 @@ export default class Render{
             container.html(template)
         })
     }
+    createTask(container, data){
+        this.loadTemplate('./src/views/createTask.hbs', container, data)
+    }
+    projects(container, data){
+        this.loadTemplate('./src/views/projects.hbs', container, data)
+    }
+
+    tasks(container, data){
+        this.loadTemplate('./src/views/tasks.hbs', container, data)
+    }
 
     loginPage(){
         this.loadTemplate('./src/views/login.hbs', this.wrapper())

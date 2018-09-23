@@ -1,0 +1,28 @@
+<div class="mid-title">
+    <p class="mid-title-text">{{#if project.project_name}}{{project.project_name}}{{else}}Today{{/if}}</p><p class="mid-title-date">date{{date}}</p>
+</div>
+<ul class="task-list">
+    {{#each project.tasks}}
+        <li class="task-list-item">
+            <div class="item-task">
+                <div class="priority" style="background-color: {{this.priority.priority_color}};"></div>
+                <p class="task-name">{{this.task_name}}</p>
+            </div>
+            <div class="task-btns" data-id="{{this.id}}" data-project_id="{{#if @root.project.id}}{{@root.project.id}}{{else}}{{this.project_id}}{{/if}}">
+                <button class="edit-btn" data-date="{{this.deadline}}" data-priority_id="{{this.priority_id}}" name="showEditTaskModal" type="button">Edit</button>
+                <button class="done-btn" name="doneTask" type="button">Done</button>
+                <button class="delete-btn" name="deleteTask" type="button">Delete</button>
+            </div>
+            
+            <div class="item-project">
+                <p class="project-name" >{{this.project_name}}</p>
+                <div class="project-color" style="background-color: {{#if @root.project.color}}{{@root.project.color}}{{else}}{{this.color}}{{/if}}"></div>
+            </div>
+        </li>
+    {{else}}
+        No tasks...
+    {{/each}} 
+</ul>
+<div class="task-modal-wrapper">
+    <a class="projects-link" name="showAddTaskModal" href="#">+ Add Task</a>
+</div>

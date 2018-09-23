@@ -26,13 +26,15 @@ router.post('/login', (req,res)=> {
     const password = req.body.password
     console.log(email, password, "credentials")
     if (!email || !password) {
-        res.json({success: false, message: 'Pls enter username and password to sign in'})
+        console.log('no email or password')
+        res.status(403).json({success: false, message: 'Pls enter username and password to sign in'})
     } else {
         models.user
         .where({email: email})
         .fetch()
         .then(user => {
             if (user) {
+                console.log('user exists')
                 bcrypt.compare(password, user.get('password'), (err, isMatch) => {
                     if (err) {
                         console.log(err)

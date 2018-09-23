@@ -5,6 +5,10 @@ export default class Functions {
     random(min, max){
         return Math.floor(Math.random() * (max - min)) + min
     }
+    compareNumericDesc(a, b) {
+        if (a > b) return -1
+        if (a < b) return 1
+    }
 
     showMessage(errorSuccsessClassName, fieldSelector, message){
         $(fieldSelector).parent().prev(`.${errorSuccsessClassName}`).remove()

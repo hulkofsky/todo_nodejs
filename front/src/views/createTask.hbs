@@ -1,0 +1,32 @@
+<div class="modal-inputs">
+    <div class="input-wrapper">
+        <label for="task-name">Task name</label>
+        <input class="modal-input" id="task-name" type="text" value="{{editData.task_name}}">
+    </div>
+    <div class="input-wrapper">
+        <label for="project-name">Project name</label>
+        <select class="modal-input" id="project-name" type="text">
+            {{#each selectOptions.projects}}
+                <option data-id="{{this.id}}">{{this.project_name}}</option>
+            {{else}}
+                No projects...
+            {{/each}} 
+        </select>
+    </div>
+    <div class="input-wrapper">
+        <label for="priority">Priority</label>
+        <select class="modal-input" id="priority" type="text">
+            <option data-id="3">High</option>
+            <option data-id="2">Medium</option>
+            <option data-id="1">Low</option>
+        </select>
+    </div>
+    <div class="input-wrapper">
+        <label for="deadline-date">Deadline</label>
+        <input class="modal-input" id="deadline-date" type="date" value="{{editData.deadline}}">
+    </div>
+</div>
+<div class="modal-buttons">
+    <button class="modal-button" data-id="{{editData.task_id}}" data-project_id="{{editData.project_id}}" name="{{#if editData}}editTask{{else}}addTask{{/if}}" type="button">{{#if editData}}Edit{{else}}Add{{/if}}</button>
+    <a href="#" class="modal-link" name="cancelAddTask">Cancel</a>
+</div>

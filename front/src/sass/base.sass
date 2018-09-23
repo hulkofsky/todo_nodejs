@@ -3,6 +3,9 @@ body
 	margin: 0
 p
 	margin: 0
+
+button
+	outline: none
 .hidden
 	display: none
 
@@ -40,3 +43,62 @@ p
 .successModal, .success
 	color: green
 	border-color: green
+
+.modal-inputs, .modal-buttons
+	display: flex
+	flex-direction: row
+	align-items: center
+	justify-content: flex-start
+	width: 100%
+	// margin-bottom: 5px
+	padding: 5px
+
+.modal-color
+	width: 12%
+	border: none
+	background-color: #fff
+	border-radius: 5px
+
+.modal-input
+	width: 75%
+
+
+.modal-button
+	width: 40px
+	height: 20px
+	background-color: #123A6D
+	border-radius: 5px
+	color: white
+	border: none
+	margin-right: 5px
+	&:hover
+		background-color: #34A853
+	&:active
+		border: 1px solid black
+    
+.modal-link
+	color: #666
+	text-decoration: none
+	&:hover
+		color: #000000
+		text-decoration: underline
+
+.edit-btn,.delete-btn,.done-btn
+	border: 1px solid #666
+	border-radius: 5px
+	background-color: yellow
+	cursor: pointer
+	display: none
+	margin-left: 5px
+	&:hover
+		background-color: green
+	&:active
+		border: 1 solid black
+.delete-btn
+	background-color: red
+	&:hover
+		background-color: pink
+.done-btn
+	background-color: #00FF00
+	&:hover
+		background-color: #4F82B6

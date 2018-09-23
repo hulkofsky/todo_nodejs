@@ -1,7 +1,7 @@
 <header class="header">
     <p class="header-logo">TODO</p>
     <div class="header-btns">
-        <button type="button" class="header-btns-btn">Done tasks</button>
+        <button type="button" class="header-btns-btn" name="showDoneTasks">Done tasks</button>
         <button type="button" class="header-btns-btn">logout</button>
     </div>
 </header>
@@ -10,28 +10,33 @@
 <div class="cont">
     <aside class="cont-left">
         <div class="cont-left-links">
-            <a href="#" class="cont-left-link">Today</a>
-            <a href="#" class="cont-left-link">Last 7 days</a>
+            <a href="#" class="cont-left-link" name="todaysTasks">Today</a>
+            <a href="#" class="cont-left-link" name="weeklyTasks">Last 7 days</a>
         </div>
         <div class="cont-left-projects">
             <p class="projects-title">Projects:</p>
             <ul class="projects-list">
                 {{#each project}}
                     <li class="projects-list-item">
-                        <div class="projects-list-color" style="background-color: {{this.color}};"></div>
-                        <a href="#" class="projects-list-a">{{this.project_name}}</a>
+                        <div class="projects-list-color" style="background-color: {{this.color}}"></div>
+                        <a href="#" class="projects-list-a" data-id="{{this.id}}">{{this.project_name}}</a>
+                        <button class="edit-btn" name="showEditModal" type="button">Edit</button>
+                        <button class="delete-btn" name="deleteProject" type="button">Delete</button>
                     </li>
                 {{else}}
                     No projects...
                 {{/each}} 
             </ul>
-            <a class="projects-link" href="#">+ Add Project</a>
+            <div class="add-wrapper">
+                <a class="projects-link" name="showAddProjectModal" href="#">+ Add Project</a>
+            </div> 
         </div>
     </aside>
-
+    
+        
     <div class="cont-mid">
         <div class="mid-title">
-            <p class="mid-title-text">title{{title}}</p><p class="mid-title-date">date{{date}}</p>
+            <p class="mid-title-text">Today</p><p class="mid-title-date">date{{date}}</p>
         </div>
         <ul class="task-list">
             {{#each todayTasks}}
@@ -40,27 +45,25 @@
                         <div class="priority" style="background-color: {{this.priority.priority_color}};"></div>
                         <p class="task-name">{{this.task_name}}</p>
                     </div>
+                    <div class="task-btns" data-id="{{this.id}}" data-project_id="{{#if @root.project.id}}{{@root.project.id}}{{else}}{{this.project_id}}{{/if}}">
+                        <button class="edit-btn" data-date="{{this.deadline}}" data-priority_id="{{this.priority_id}}" name="showEditTaskModal" type="button">Edit</button>
+                        <button class="done-btn" name="doneTask" type="button">Done</button>
+                        <button class="delete-btn" name="deleteTask" type="button">Delete</button>
+                    </div>
+            
                     <div class="item-project">
                         <p class="project-name" >{{this.project_name}}</p>
                         <div class="project-color" style="background-color: {{this.color}};"></div>
-                    </div>
-                    
-                    
+                    </div>         
                 </li>
             {{else}}
                 No tasks...
             {{/each}} 
         </ul>
+        <div class="task-modal-wrapper">
+            <a class="projects-link" name="showAddTaskModal" href="#">+ Add Task</a>
+        </div> 
     </div>
-
-    <aside class="cont-right">
-        right section
-        {{!-- {{#each friends}}
-            
-        {{else}}
-            No friends...
-        {{/each}}  --}}
-    </aside>
 </div>
 
 

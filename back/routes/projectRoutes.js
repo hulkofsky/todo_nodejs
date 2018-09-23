@@ -35,12 +35,73 @@ router.get('/',(req,res)=>{
 
                     for(i=0;i<projectJson.length;i++){
                         for(j=0;j<projectJson[i].tasks.length;j++){
-                            // console.log(projectJson[i].tasks[j], 'tasks')
+                            //console.log(projectJson[i].tasks[j], 'tasks')
 
-                            // console.log(typeof projectJson[i].tasks[j].deadline , 'typeof deadline')
-                            // console.log(projectJson[i].tasks[j].deadline.toISOString().substring(0, 10), 'date from db')
-                            console.log(projectJson[i].color , 'color')
+                            console.log(today.toISOString().substring(0, 10) , 'today date')
+                            console.log(projectJson[i].tasks[j].deadline.toISOString().substring(0, 10), 'date from db')
+                            
                             if(projectJson[i].tasks[j].deadline.toISOString().substring(0, 10) == today.toISOString().substring(0, 10)){
+                                todayTasks.push({
+                                    ...projectJson[i].tasks[j],
+                                    color: projectJson[i].color,
+                                    project_name: projectJson[i].project_name
+                                })
+                            }
+                        }
+                    }
+
+                    console.log(todayTasks, `today tasks`)
+
+                    return res.status(200).json({
+                        success: true, 
+                        user: user, 
+                        project: project,
+                        todayTasks: todayTasks
+                    })
+                })
+            }else{
+                return res.status(403).json({success: false, data: {message: `403. Unauthorized.`}})
+            }
+        }) 
+    }
+})
+
+router.get('/:userId/done',(req,res)=>{
+    const token = req.headers.token
+    const userId = req.params.userId
+
+    console.log(token, typeof token, "token on homepage")
+    console.log(userId, typeof userId, "userId on homepage")
+
+    if(!token || token == "null" || !userId || userId == "null"){
+        return res.status(403).json({success:false, message: `403. Unauthorized`})
+    } else{
+        models.user
+        .query((qb) => {
+            qb
+            .where({token: token})
+            .andWhere({id: userId})
+        })
+        .fetch()
+        .then(user => {
+            if(user){
+                models.project
+                .where({user_id: userId})
+                .fetchAll({withRelated: ['tasks.priority']})
+                .then(project=>{
+                    const projectJson = project.toJSON()
+                    const today = new Date()
+                    
+                    const todayTasks = []
+
+                    for(i=0;i<projectJson.length;i++){
+                        for(j=0;j<projectJson[i].tasks.length;j++){
+                            //console.log(projectJson[i].tasks[j], 'tasks')
+
+                            console.log(today.toISOString().substring(0, 10) , 'today date')
+                            console.log(projectJson[i].tasks[j].deadline.toISOString().substring(0, 10), 'date from db')
+                            
+                            if(projectJson[i].tasks[j].is_done){
                                 todayTasks.push({
                                     ...projectJson[i].tasks[j],
                                     color: projectJson[i].color,
@@ -77,6 +138,7 @@ router.get('/:userId/projects/:projectId', (req,res)=>{
     console.log(projectId, 'project page projectId')
 
     if(!token){
+        console.log('no token')
         return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
     }
 
@@ -91,7 +153,7 @@ router.get('/:userId/projects/:projectId', (req,res)=>{
         if(user){
             models.project
             .forge({id: projectId})
-            .fetch({withRelated: ['tasks']})
+            .fetch({withRelated: ['tasks.priority']})
             .then(project=>{
                 res.status(200).json({
                     success: true, 
@@ -109,11 +171,55 @@ router.get('/:userId/projects/:projectId', (req,res)=>{
     })
 })
 
+//get projects
+router.get('/:userId/projects', (req,res)=>{
+    const token = req.headers.token
+    const userId = req.params.userId
+
+    console.log(token, 'project page token')
+    console.log(userId, 'project page userId')
+
+    if(!token){
+        console.log('no token')
+        return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
+    }
+
+    models.user
+    .query((qb) => {
+        qb
+        .where({token: token})
+        .andWhere({id: userId})
+    })
+    .fetch()
+    .then(user => {
+        if(user){
+            models.project
+            .where({user_id: userId})
+            .fetchAll()
+            .then(projects=>{
+                res.status(200).json({
+                    success: true, 
+                    user: user, 
+                    projects: projects
+                })
+            })
+        }else{
+            res.status(403).json({success: false, data: {message: `403. Restricted.`}})
+        }
+
+    })
+    .catch(err=>{
+        res.status(500).json({success: false, data: {message: err.message}})
+    })
+})
+
 //create project
 router.post('/:userId/projects', (req,res)=>{
     const token = req.headers.token
     const userId = req.params.userId
-    const projectName = req.body.project_name
+    const projectData = req.body
+
+    console.log(projectData, 'create project projectData')
 
     if(!token){
         return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
@@ -135,7 +241,8 @@ router.post('/:userId/projects', (req,res)=>{
 
             models.project
             .forge({
-                project_name: projectName,
+                project_name: projectData.project_name,
+                color: projectData.color,
                 user_id: userId
             })
             .save()
@@ -157,7 +264,9 @@ router.put('/:userId/projects/:projectId', (req,res)=>{
     const token = req.headers.token
     const userId = req.params.userId
     const projectId = req.params.projectId
-    const projectName = req.body.project_name
+    const projectData = req.body
+
+    console.log(projectData, 'project data to update')
 
     if(!token){
         return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
@@ -178,17 +287,26 @@ router.put('/:userId/projects/:projectId', (req,res)=>{
             // }
             
             models.project
-            .forge({id:  projectId})
-            .fetch({require: true})
+            .query((qb) => {
+                qb
+                .where({id: projectId})
+                .andWhere({user_id: userId})
+            })
+            .fetch()
             .then(project=>{
-                project
-                .save({
-                    project_name: projectName,
-                    user_id: userId
-                })
-                .then(result=>{
-                    res.json({success: true, data: {message: `Project ${result.get('id')} successfully updated`}})
-                })
+                if(project){
+                    project
+                    .save({
+                        project_name: projectData.project_name,
+                        user_id: projectData.userId,
+                        color: projectData.color
+                    })
+                    .then(result=>{
+                        res.status(200).json({success: true, data: {message: `Project ${result.get('id')} successfully updated`}})
+                    })
+                }else{
+                    res.status(404).json({success: false, data: {message: `404. Not found.`}})
+                }
             })
             
         }else{

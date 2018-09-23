@@ -12,6 +12,8 @@ router.post('/:userId/projects/:projectId/tasks', (req,res)=>{
     const projectId = req.params.projectId
     const taskInfo = req.body
 
+    console.log(taskInfo, 'create task data')
+
     if(!token){
         return res.status(403).json({success: false, data: {message: `403. Restricted.`}})
     }
@@ -89,13 +91,14 @@ router.put('/:userId/projects/:projectId/tasks/:taskId', (req,res)=>{
                 if(task){
                     task
                     .save({
-                        task_name: taskInfo.task_name,
-                        priority_id: taskInfo.priority_id,
-                        deadline: taskInfo.deadline,
-                        is_done: taskInfo.is_done,
-                        project_id: projectId
+                        task_name: taskInfo.task_name || task.get('task_name'),
+                        priority_id: taskInfo.priority_id || task.get('priority_id'),
+                        deadline: taskInfo.deadline || task.get('deadline'),
+                        is_done: taskInfo.is_done || task.get('is_done'),
+                        project_id: projectId  || task.get('project_id')
                     })
                     .then(result=>{
+                        console.log(result, `updated task`)
                         res.status(200).json({success: true, data: {message: `Task ${result.get('id')} successfully updated`}})
                     })
                 }else{

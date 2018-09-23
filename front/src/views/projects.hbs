@@ -1,0 +1,10 @@
+{{#each projects}}
+    <li class="projects-list-item">
+        <div class="projects-list-color" style="background-color: {{this.color}}"></div>
+        <a href="#" class="projects-list-a" data-id="{{this.id}}">{{this.project_name}}</a>
+        <button class="edit-btn" name="showEditModal" type="button">Edit</button>
+        <button class="delete-btn" name="deleteProject" type="button">Delete</button>
+    </li>
+{{else}}
+    No projects...
+{{/each}} 
