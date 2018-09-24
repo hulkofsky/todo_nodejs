@@ -95,7 +95,7 @@ router.put('/:userId/projects/:projectId/tasks/:taskId', (req,res)=>{
                         priority_id: taskInfo.priority_id || task.get('priority_id'),
                         deadline: taskInfo.deadline || task.get('deadline'),
                         is_done: taskInfo.is_done || task.get('is_done'),
-                        project_id: projectId  || task.get('project_id')
+                        project_id: taskInfo.project_id  || task.get('project_id')
                     })
                     .then(result=>{
                         console.log(result, `updated task`)

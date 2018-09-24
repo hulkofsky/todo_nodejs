@@ -12,7 +12,7 @@ import Render from './render.js'
     const functions = new Functions()
     const render = new Render()
 
-    api.init();
+    api.init()
 
     $('body').on('click', '[name=showDoneTasks]',function(e){
         api.showDoneTasks($('.cont-mid'))
@@ -21,9 +21,11 @@ import Render from './render.js'
     $('body').on('click', '[name="editTask"]', function(){
         const task_id = $(this).data().id
         const project_id = $(this).data().project_id
+        
         const taskData = {
-            task_name: $('#project-name').val(),
-            priority_id: $('#priority').children().attr('selected').data().id, //fix selector here
+            new_project_id: $('#project-name').find(':selected').data().id,
+            task_name: $('#task-name').val(),
+            priority_id: $('#priority').find(':selected').data().id, //fix selector here
             deadline: $('#deadline-date').val()
         }
         api.editTask($('.cont-mid'),task_id, project_id, taskData)

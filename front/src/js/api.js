@@ -242,6 +242,8 @@ export default class RestInterraction {
         const token = localStorage.getItem('token')
         const functions = new Functions
 
+        console.log(taskData, 'editiTask taskdata')
+
         $.ajax({
             url: `${constants.baseUrl}${userId}/projects/${project_id}/tasks/${task_id}`, 
             method: 'PUT',
@@ -254,7 +256,7 @@ export default class RestInterraction {
                 task_name: taskData.task_name,
                 priority_id: taskData.priority_id,
                 deadline: taskData.deadline,
-                project_id: project_id
+                project_id: taskData.new_project_id
             },
 
             success: data => {
