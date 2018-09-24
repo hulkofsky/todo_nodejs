@@ -16,7 +16,7 @@
         <div class="cont-left-projects">
             <p class="projects-title">Projects:</p>
             <ul class="projects-list">
-                {{#each project}}
+                {{#each data.project}}
                     <li class="projects-list-item">
                         <div class="projects-list-color" style="background-color: {{this.color}}"></div>
                         <a href="#" class="projects-list-a" data-id="{{this.id}}">{{this.project_name}}</a>
@@ -36,10 +36,10 @@
         
     <div class="cont-mid">
         <div class="mid-title">
-            <p class="mid-title-text">Today</p><p class="mid-title-date">date{{date}}</p>
+            <p class="mid-title-text">Today</p><p class="mid-title-date">{{date}}</p>
         </div>
         <ul class="task-list">
-            {{#each todayTasks}}
+            {{#each data.todayTasks}}
                 <li class="task-list-item">
                     <div class="item-task">
                         <div class="priority" style="background-color: {{this.priority.priority_color}};"></div>

@@ -456,9 +456,16 @@ export default class RestInterraction {
                 },
 
                 success: (data) => {
-                    console.log(data, "project page data")
+                    
                     data.todayTasks.sort(functions.compareNumericDesc).reverse()
-                    render.profilePage(data)
+                    const date = new Date()
+                    const todayDate = (date.getMonth() + 1) + "/" + date.getDate()
+                    const context = {
+                        data: data,
+                        date: todayDate
+                    }
+                    console.log(context, "project page data")
+                    render.profilePage(context)
                 },
                 error: (err) => {
                     console.log(err.status, typeof err.status, "error")
