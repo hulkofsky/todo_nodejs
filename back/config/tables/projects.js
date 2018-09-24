@@ -2,38 +2,38 @@ module.exports = [
     {
         project_name: `Concert`,
         user_id: 1,
-        color: `red`
+        color: `#ff0000`
     },
 
     {
         project_name: `Home`,
         user_id: 1,
-        color: `yellow`
+        color: `#ffff00`
     },
 
     {
         project_name: `Car`,
         user_id: 1,
-        color: `blue`
+        color: `#0000ff`
     },
 
     {
         project_name: `Write a book`,
         user_id: 1,
-        color: `orange`
+        color: `#ffa500`
     },
 
     {
         project_name: `Get a job`,
         user_id: 1,
-        color: `green`
+        color: `#2AAE48`
     },
 
     
     {
         project_name: `Exams`,
         user_id: 2,
-        color: `pink`
+        color: `#ff69b4`
     },
 
     {
@@ -45,7 +45,7 @@ module.exports = [
     {
         project_name: `Film`,
         user_id: 2,
-        color: `red`
+        color: `#ff0000`
     },
 
     {
