@@ -6,8 +6,8 @@ export default class Functions {
         return Math.floor(Math.random() * (max - min)) + min
     }
     compareNumericDesc(a, b) {
-        if (a > b) return -1
-        if (a < b) return 1
+        if (a.priority_id > b.priority_id) return 1
+        if (a.priority_id < b.priority_id) return -1
     }
 
     showMessage(errorSuccsessClassName, fieldSelector, message){

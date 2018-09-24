@@ -321,12 +321,11 @@ export default class RestInterraction {
                 token: token
             },
             success: data => {
-                console.log(data, 'showDoneTasks data')
-                data.todayTasks.sort(functions.compareNumericDesc).reverse()
+                console.log(data.todayTasks.sort(functions.compareNumericDesc), 'showDoneTasks sorted data')
                 
                 const context = {
                     project: {
-                        tasks: data.todayTasks,
+                        tasks: data.todayTasks.sort(functions.compareNumericDesc).reverse(),
                     }    
                 }
                 
