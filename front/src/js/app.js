@@ -14,6 +14,10 @@ import Render from './render.js'
 
     api.init()
 
+    $('body').on('click', '[name=logout]',function(e){
+        api.logout($('.cont-mid'))
+    })
+
     $('body').on('click', '[name=showDoneTasks]',function(e){
         api.showDoneTasks($('.cont-mid'))
     })

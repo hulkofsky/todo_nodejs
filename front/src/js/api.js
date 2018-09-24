@@ -434,7 +434,7 @@ export default class RestInterraction {
     } 
 
     logout(){
-        //delete token here
+        localStorage.removeItem('token')
         this.init()
     }
 
