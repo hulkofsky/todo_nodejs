@@ -1,38 +1,52 @@
 const {Client} = require('pg')
-const keys = require('./keys')
+
+console.log(process.env.DB_PASSWORD, 'password')
 
 //connecting to postgres
 const postgresClient = new Client({
-    host: keys.postgres.host,
-    port: keys.postgres.port,
-    user: keys.postgres.user,
-    password: keys.postgres.password,
-    database: keys.postgres.database
-})
-
-postgresClient.connect((err)=>{
-    err ? console.log(`Postgres connection error: ${err}`) :
-        console.log('Postgres connected!')
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 })
 
 const tables = [
 
-    `DROP TABLE tasks;`,
+    `DROP TABLE IF EXISTS tasks;`,
 
-    `DROP TABLE projects;`,
+    `DROP TABLE IF EXISTS projects;`,
 
-    `DROP TABLE priorities;`,
+    `DROP TABLE IF EXISTS priorities;`,
 
-    `DROP TABLE users;`,
+    `DROP TABLE IF EXISTS users;`,
 ]
 
-tables.forEach((item, i) => {
-    let query = item
-    postgresClient.query(query, (err) => {
-        if (err) {
-            console.log(`An error has been occured while deleting table ${i} - ${err}`)
-        } else {
-            console.log(`Table ${i} succesfully deleted`)
-        }
+new Promise((resolve, reject)=>{
+    postgresClient.connect((err)=>{
+        err ? reject(`Postgres connection error: ${err}`) :
+            resolve('Postgres connected!')
     })
+})
+.then(()=>
+Promise.all(tables.map((item,i)=>{
+    return new Promise((resolve, reject)=>{
+        postgresClient.query(item, (err)=>{
+            if(err) {
+                reject()
+                console.log(`An error has been occured while deleting table ${i} - ${err}`)
+            } else {
+                resolve()
+                console.log(`Table ${i} succesfully deleted`)
+            }
+        })
+    })
+})))
+.then((result)=>{
+    process.exit()
+})
+.catch((error)=>{
+    if (error){
+        console.log(error)
+    }
 })

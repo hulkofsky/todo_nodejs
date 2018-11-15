@@ -2,9 +2,7 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-const port = 5000
 const cors = require('cors')
-const path = require('path')
 
 //ROUTES
 const authRouter = require('./routes/authRoutes')
@@ -14,10 +12,6 @@ const taskRouter = require('./routes/taskRoutes')
 app.use(morgan('dev'))
 
 app.use(cors())
-
-// //load view engine
-// app.set('views', path.join(__dirname, 'front/views'))
-// app.set('view engine', 'pug')
 
 //bodyparser init
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
@@ -33,7 +27,7 @@ app.get('*', (req,res)=>{
     res.send('Oo oops!!')
 })
 
-app.listen(port, err=>{
+app.listen(process.env.PORT, err=>{
     err?console.log('Oo oops! Something went wrong!'):
-        console.log(`Shit happens on ${port}`)
+        console.log(`Shit happens on ${process.env.PORT}`)
 })

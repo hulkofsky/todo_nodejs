@@ -1,18 +1,12 @@
 const {Client} = require('pg')
-const keys = require('./keys')
 
 //connecting to postgres
 const postgresClient = new Client({
-    host: keys.postgres.host,
-    port: keys.postgres.port,
-    user: keys.postgres.user,
-    password: keys.postgres.password,
-    database: keys.postgres.database
-})
-
-postgresClient.connect((err)=>{
-    err ? console.log(`Postgres connection error: ${err}`) :
-        console.log('Postgres connected!')
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 })
 
 const tables = [
@@ -46,15 +40,29 @@ const tables = [
     );`,
 ]
 
-tables.forEach((item, i)=>{
-    let query = item
-    postgresClient.query(query, (err)=>{
-        if(err) {
-            console.log(`An error has been occured while creating table ${i} - ${err}`)
-        } else {
-            console.log(`Table ${i} succesfully created`)
-        }
-        
+new Promise((resolve, reject)=>{
+    postgresClient.connect((err)=>{
+        err ? reject(`Postgres connection error: ${err}`) :
+            resolve('Postgres connected!')
     })
 })
-
+.then(()=>
+Promise.all(tables.map((item,i)=>{
+    return new Promise((resolve, reject)=>{
+        postgresClient.query(item, (err)=>{
+            if(err) {
+                console.log(`An error has been occured while creating table ${i} - ${err}`)
+                reject()
+            } else {
+                console.log(`Table ${i} succesfully created`)
+                resolve()
+            }
+        })
+    })
+})))
+.then(()=>{
+    process.exit()
+})
+.catch(error=>{
+    console.log(error)
+})

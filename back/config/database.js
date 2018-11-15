@@ -1,14 +1,12 @@
-const keys = require('./keys')
-
 const knex = require('knex')({
-    client: keys.postgres.client,
+    client: process.env.DB_CLIENT,
     connection: {
-        host     : keys.postgres.host,
-        user     : keys.postgres.user,
-        password : keys.postgres.password,
-        database : keys.postgres.database,
-        charset  : keys.postgres.charset
+        host     : process.env.DB_HOST,
+        user     : process.env.DB_USER,
+        password : process.env.DB_PASSWORD,
+        database : process.env.DB_NAME,
+        charset  : process.env.DB_CHARSET
   }
-});
+})
 
-module.exports = require('bookshelf')(knex);
+module.exports = require('bookshelf')(knex)

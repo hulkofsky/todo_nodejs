@@ -1,30 +1,88 @@
 const {Client} = require('pg')
-const keys = require('./keys')
-const Bookshelf = require('./database')
 const projects = require('./tables/projects')
 const priorities = require('./tables/priorities')
 const tasks = require('./tables/tasks')
 const users = require('./tables/users')
 
-const models = require('./models')
+const models = require('../models/models')
 
 //connecting to postgres
 const postgresClient = new Client({
-    host: keys.postgres.host,
-    port: keys.postgres.port,
-    user: keys.postgres.user,
-    password: keys.postgres.password,
-    database: keys.postgres.database
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 })
 
-postgresClient.connect((err)=>{
-    err ? console.log(`Postgres connection error: ${err}`) :
-        console.log('Postgres connected!')
+new Promise((resolve, reject)=>{
+    postgresClient.connect((err)=>{
+        err ? reject(`Postgres connection error: ${err}`) :
+            resolve('Postgres connected!')
+    })
 })
+.then(()=>Promise.all( users.map((item, i) => {
+    return new Promise((resolve, reject)=>{
+        models.user
+        .forge({
+            username:item.username,
+            email: item.email,
+            password: item.password
+        })
+        .save()
+        .then(result=>{
+            resolve()
+            console.log(`user ${item.username} successfully inserted`)
+        })
+        .catch(err=>{
+            reject()
+            console.log(`Error while inserting user ${item.username} - ${err}`)
+        })
+    })
+})))
+.then(()=>Promise.all(priorities.map((item,i)=>{
+    return new Promise((resolve, reject)=>{
+        models.priority
+        .forge({
+            id: item.id,
+            priority_color: item.priority_color
+        })
+        .save(null, {method: 'insert'})
+        .then(result=>{
+            resolve()
+            console.log(`priority ${item.priority_color} successfully inserted`)
+        })
+        .catch(err=>{
+            reject()
+            console.log(`Error while inserting priority ${item.priority_color} - ${err}`)
+        })
+    })
+})))
+.then(()=>Promise.all(tasks.map((item,i)=>{
+    return new Promise((resolve, reject)=>{
+        models.task
+        .forge({
+            task_name:item.task_name,
+            priority_id: item.priority_id,
+            deadline: item.deadline,
+            is_done: item.is_done,
+            project_id: item.project_id
+        })
+        .save()
+        .then(result=>{
+            console.log(`task ${item.task_name} successfully inserted`)
+            resolve()
+        })
+        .catch(err=>{
+            console.log(`Error while inserting task ${item.task_name} - ${err}`)
+            reject()
+        })
+    })
+})))
+.then(()=>Promise.all(projects.map((item,i)=>{
 
-//table projects
-projects.forEach((item, i)=>{
-    models.project
+    return new Promise((resolve, reject)=>{
+        models.project
         .forge({
             project_name: item.project_name,
             user_id: item.user_id,
@@ -33,66 +91,14 @@ projects.forEach((item, i)=>{
         .save()
         .then(result=>{
             console.log(`project ${item.project_name} successfully inserted`)
+            resolve()
         })
         .catch(err=>{
             console.log(`Error while inserting branches ${item.project_name} - ${err}`)
+            reject()
         })
+    })
+})))
+.then((result)=>{
+    process.exit()
 })
-
-//table priorities
-priorities.forEach((item, i)=>{
-    models.priority
-        .forge({
-            id: item.id,
-            priority_color: item.priority_color
-        })
-        .save(null, {method: 'insert'})
-        .then(result=>{
-            console.log(`priority ${item.priority_color} successfully inserted`)
-        })
-        .catch(err=>{
-            console.log(`Error while inserting priority ${item.priority_color} - ${err}`)
-        })
-})
-
-//table tasks
-tasks.forEach((item, i)=>{
-    models.task
-    .forge({
-        task_name:item.task_name,
-        priority_id: item.priority_id,
-        deadline: item.deadline,
-        is_done: item.is_done,
-        project_id: item.project_id
-    })
-    .save()
-    .then(result=>{
-        console.log(`task ${item.task_name} successfully inserted`)
-    })
-    .catch(err=>{
-        console.log(`Error while inserting task ${item.task_name} - ${err}`)
-    })
-})
-
-//table users
-users.forEach((item, i)=>{
-    models.user
-    .forge({
-        username:item.username,
-        email: item.email,
-        password: item.password
-    })
-    .save()
-    .then(result=>{
-        console.log(`user ${item.username} successfully inserted`)
-    })
-    .catch(err=>{
-        console.log(`Error while inserting user ${item.username} - ${err}`)
-    })
-})
-
-
-
-
-
-

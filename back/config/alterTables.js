@@ -1,13 +1,12 @@
 const {Client} = require('pg')
-const keys = require('./keys')
 
 //connecting to postgres
 const postgresClient = new Client({
-    host: keys.postgres.host,
-    port: keys.postgres.port,
-    user: keys.postgres.user,
-    password: keys.postgres.password,
-    database: keys.postgres.database
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 })
 
 postgresClient.connect((err)=>{
@@ -37,5 +36,19 @@ tables.forEach((item, i)=>{
         }
 
     })
+})
+
+Promise.all(tables.map((item,i)=>{
+    return new Promise((resolve, reject)=>{
+        postgresClient.query(item, (err)=>{
+            if(err) {
+                reject(`An error has been occured while creating table ${i} - ${err}`)
+            } else {
+                resolve(`Table ${i} succesfully altered`)
+            }
+        })
+    })
+})).then((result)=>{
+    process.exit()
 })
 

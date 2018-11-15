@@ -19,7 +19,12 @@
     "pug": "^2.0.3"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "dev": "nodemon -r dotenv/config server.js",
+    "start": "node -r dotenv/config server.js",
+    "drop": "node -r dotenv/config config/deleteTables.js",
+    "create": "node -r dotenv/config config/createTables.js",
+    "alter": "node -r dotenv/config config/alterTables.js",
+    "seed": "node -r dotenv/config config/seed.js"
   },
   "author": "",
   "license": "ISC"
