@@ -35,19 +35,19 @@ npm run start
 - Request(x-www-form-urlencoded) body:
 ```json
 {
-    email: String,
-    password: String,
-    username: String,
+    "email": "String",
+    "password": "String",
+    "username": "String",
 }
 ```
 
 - Response:
 ```json
 {
-    "success": Boolean,
-    "id": Number,
-    "token": String,
-    "username": String
+    "success": "Boolean",
+    "id": "Number",
+    "token": "String",
+    "username": "String"
 }
 ```
 
@@ -59,20 +59,20 @@ npm run start
 - Request(x-www-form-urlencoded) body: 
 ```json
 {
-    email: String,
-    password: String
+    "email": "String",
+    "password": "String"
 }
 ```
 
 - Response:
 ```json
 {
-    "success": Boolean,
+    "success": "Boolean",
     "user": {
-        "id": Number,
-        "username": String,
-        "email": String,
-        "token": String
+        "id": "Number",
+        "username": "String",
+        "email": "String",
+        "token": "String"
     }
 }
 ```
@@ -82,20 +82,20 @@ npm run start
 - Request headers: 
 ```json
 {
-    token: String
+    "token": "String"
 }
 ```
 - Request(x-www-form-urlencoded) body:
 ```json
 {
-    user_id: Number
+    "user_id": "Number"
 }
 ```
 - Response:
 ```json
 {
-    "success": Boolean,
-    "message": String
+    "success": "Boolean",
+    "message": "String"
 }
 ```
 
@@ -105,69 +105,69 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
-    user_id: Number
+    "token": "String",
+    "user_id": "Number"
 }
 ```
 
 - Response:
 ```json
 {
-    "success": Boolean,
+    "success": "Boolean",
     "user": {
-        "id": Number,
-        "username": String,
-        "email": String,
-        "password": String,
-        "token": String,
+        "id": "Number",
+        "username": "String",
+        "email": "String",
+        "password": "String",
+        "token": "String",
     }
     "projects": [
         {
-            "id": Number,
-            "project_name": String,
-            "color": String,
-            "user_id": Number,
+            "id": "Number",
+            "project_name": "String",
+            "color": "String",
+            "user_id": "Number",
             "tasks": [
                 {
-                    "id": Number,
-                    "task_name": String,
-                    "priority_id": Number,
-                    "deadline": Timestamp,
-                    "is_done": Boolean,
-                    "project_id": Number
+                    "id": "Number",
+                    "task_name": "String",
+                    "priority_id": "Number",
+                    "deadline": "Timestamp",
+                    "is_done": "Boolean",
+                    "project_id": "Number"
                     "priority": {
-                        "id": Number,
-                        "priority_color": String
+                        "id": "Number",
+                        "priority_color": "String"
                     }
                 },
                 ...
             ],
             "todaysTasks": [
                 {
-                    "id": Number,
-                    "task_name": String,
-                    "priority_id": Number,
-                    "deadline": Timestamp,
-                    "is_done": Boolean,
-                    "project_id": Number
+                    "id": "Number",
+                    "task_name": "String",
+                    "priority_id": "Number",
+                    "deadline": "Timestamp",
+                    "is_done": "Boolean",
+                    "project_id": "Number"
                      "priority": {
-                        "id": Number,
-                        "priority_color": String
+                        "id": "Number",
+                        "priority_color": "String"
                     }
                 },
                 ...
             ],
             "deadlinedTasks": [
                  {
-                    "id": Number,
-                    "task_name": String,
-                    "priority_id": Number,
-                    "deadline": Timestamp,
-                    "is_done": Boolean,
-                    "project_id": Number
+                    "id": "Number",
+                    "task_name": "String",
+                    "priority_id": "Number",
+                    "deadline": "Timestamp",
+                    "is_done": "Boolean",
+                    "project_id": "Number"
                      "priority": {
-                        "id": Number,
-                        "priority_color": String
+                        "id": "Number",
+                        "priority_color": "String"
                     }
                 },
                 ...
@@ -184,53 +184,53 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
+    "token": "String",
 }
 ```
 
 - Response:
 ```json
 {
-    "success": Boolean,
+    "success": "Boolean",
     "user": {
-        "id": Number,
-        "username": String,
-        "email": String,
-        "password": String,
-        "token": String,
+        "id": "Number",
+        "username": "String",
+        "email": "String",
+        "password": "String",
+        "token": "String",
     }
     "projects": [
         {
-            "id": Number,
-            "project_name": String,
-            "color": String,
-            "user_id": Number,
+            "id": "Number",
+            "project_name": "String",
+            "color": "String",
+            "user_id": "Number",
             "tasks": [
                 {
-                    "id": Number,
-                    "task_name": String,
-                    "priority_id": Number,
-                    "deadline": Timestamp,
-                    "is_done": Boolean,
-                    "project_id": Number
+                    "id": "Number",
+                    "task_name": "String",
+                    "priority_id": "Number",
+                    "deadline": "Timestamp",
+                    "is_done": "Boolean",
+                    "project_id": "Number"
                      "priority": {
-                        "id": Number,
-                        "priority_color": String
+                        "id": "Number",
+                        "priority_color": "String"
                     }
                 },
                 ...
             ],
             "doneTasks": [
                 {
-                    "id": Number,
-                    "task_name": String,
-                    "priority_id": Number,
-                    "deadline": Timestamp,
-                    "is_done": Boolean,
-                    "project_id": Number
+                    "id": "Number",
+                    "task_name": "String",
+                    "priority_id": "Number",
+                    "deadline": "Timestamp",
+                    "is_done": "Boolean",
+                    "project_id": "Number"
                      "priority": {
-                        "id": Number,
-                        "priority_color": String
+                        "id": "Number",
+                        "priority_color": "String"
                     }
                 },
                 ...
@@ -248,37 +248,37 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
+    "token": "String",
 }
 ```
 
 - Response:
 ```json
 {
-    "success": Boolean,
+    "success": "Boolean",
     "user": {
-        "id": Number,
-        "username": String,
-        "email": String,
-        "password": String,
-        "token": String,
+        "id": "Number",
+        "username": "String",
+        "email": "String",
+        "password": "String",
+        "token": "String",
     }
     "projects": {
-        "id": Number,
-        "project_name": String,
-        "color": String,
-        "user_id": Number,
+        "id": "Number",
+        "project_name": "String",
+        "color": "String",
+        "user_id": "Number",
         "tasks": [
             {
-                "id": Number,
-                "task_name": String,
-                "priority_id": Number,
-                "deadline": Timestamp,
-                "is_done": Boolean,
-                "project_id": Number,
+                "id": "Number",
+                "task_name": "String",
+                "priority_id": "Number",
+                "deadline": "Timestamp",
+                "is_done": "Boolean",
+                "project_id": "Number",
                 "priority": {
-                    "id": Number,
-                    "priority_color": String
+                    "id": "Number",
+                    "priority_color": "String"
                 }
             },
             ...
@@ -293,33 +293,33 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
+    "token": "String",
 }
 ```
 
 - Request(x-www-form-urlencoded) body:
 ```json
 {
-   project_name: String,
-   color: String(example: "#000000")
+   "project_name": "String",
+   "color": String(example: "#000000")
 }
 ```
 - Response:
 ```json
 {
-    "success": Boolean,
+    "success": "Boolean",
     "user": {
-        "id": Number,
-        "username": String,
-        "email": String,
-        "password": String,
-        "token": String
+        "id": "Number",
+        "username": "String",
+        "email": "String",
+        "password": "String",
+        "token": "String"
     },
     "project": {
-        "project_name": String,
+        "project_name": "String",
         "color": String(example: "#000000"),
-        "user_id": Number,
-        "id": Number
+        "user_id": "Number",
+        "id": "Number"
     }
 }
 ```
@@ -330,44 +330,44 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
+    "token": "String",
 }
 ```
 
 - Request(x-www-form-urlencoded) body:
 ```json
 {
-   project_name: String,
-   color: String(example: "#000000")
+   "project_name": "String",
+   "color": String(example: "#000000")
 }
 ```
 - Response:
 ```json
 {
-    "success": Boolean,
+    "success": "Boolean",
     "user": {
-        "id": Number,
-        "username": String,
-        "email": String,
-        "password": String,
-        "token": String
+        "id": "Number",
+        "username": "String",
+        "email": "String",
+        "password": "String",
+        "token": "String"
     },
     "project": {
-        "id": Number,
-        "project_name": String,
+        "id": "Number",
+        "project_name": "String",
         "color": String(example: "#000000"),
-        "user_id": Number,
+        "user_id": "Number",
         "tasks": [
             {
-                "id": Number,
-                "task_name": String,
-                "priority_id": Number,
-                "deadline": Timestamp,
-                "is_done": Boolean,
-                "project_id": Number,
+                "id": "Number",
+                "task_name": "String",
+                "priority_id": "Number",
+                "deadline": "Timestamp",
+                "is_done": "Boolean",
+                "project_id": "Number",
                 "priority": {
-                    "id": Number,
-                    "priority_color": String
+                    "id": "Number",
+                    "priority_color": "String"
                 }
             },
             ...
@@ -382,14 +382,14 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
+    "token": "String",
 }
 ```
 - Response:
 ```json
 {
-    "success": Boolean,
-    "message": String
+    "success": "Boolean",
+    "message": "String"
 }
 ```
 
@@ -402,37 +402,37 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
+    "token": "String",
 }
 ```
 
 - Request(x-www-form-urlencoded) body:
 ```json
 {
-    task_name: String
-    priority_id: Number
-    deadline: Timestamp
-    is_done: Boolean
+    "task_name": "String",
+    "priority_id": "Number",
+    "deadline": "Timestamp",
+    "is_done": "Boolean",
 }
 ```
 - Response:
 ```json
 {
-    "success": Boolean,
+    "success": "Boolean",
     "user": {
-        "id": Number,
-        "username": String,
-        "email": String,
-        "password": String,
-        "token": String
+        "id": "Number",
+        "username": "String",
+        "email": "String",
+        "password": "String",
+        "token": "String"
     },
     "task": {
-        "task_name": String,
-        "priority_id": Number,
-        "deadline": Timestamp",
-        "is_done": Boolean,
-        "project_id": Number,
-        "id": Number
+        "task_name": "String",
+        "priority_id": "Number",
+        "deadline": "Timestamp",
+        "is_done": "Boolean",
+        "project_id": "Number",
+        "id": "Number"
     }
 }
 ```
@@ -443,37 +443,37 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
+    "token": "String",
 }
 ```
 
 - Request(x-www-form-urlencoded) body:
 ```json
 {
-    task_name: String
-    priority_id: Number
-    deadline: Timestamp
-    is_done: Boolean
+    "task_name": "String",
+    "priority_id": "Number",
+    "deadline": "Timestamp",
+    "is_done": "Boolean",
 }
 ```
 - Response:
 ```json
 {
-    "success": Boolean,
+    "success": "Boolean",
     "user": {
-        "id": Number,
-        "username": String,
-        "email": String,
-        "password": String,
-        "token": String
+        "id": "Number",
+        "username": "String",
+        "email": "String",
+        "password": "String",
+        "token": "String"
     },
     "task": {
-        "id": Number,
-        "task_name": String,
-        "priority_id": Number,
-        "deadline": Timestamp,
-        "is_done": Boolean,
-        "project_id": Number,
+        "id": "Number",
+        "task_name": "String",
+        "priority_id": "Number",
+        "deadline": "Timestamp",
+        "is_done": "Boolean",
+        "project_id": "Number",
     }
 }
 ```
@@ -484,14 +484,14 @@ npm run start
 - Request headers:
 ```json
 {
-    token: String,
+    "token": "String",
 }
 ```
 - Response:
 ```json
 {
-    "success": Boolean,
-    "message": String
+    "success": "Boolean",
+    "message": "String"
 }
 ```
 
